@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+
+    <title>Project Page</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        // ── Replace these three values with your own from emailjs.com ──
+        const EMAILJS_PUBLIC_KEY  = "EiT4f9V7-zEt9HQp-";
+        const EMAILJS_SERVICE_ID  = "service_0dwrv3r";
+        const EMAILJS_TEMPLATE_ID = "template_79swta7";
+
+        window.addEventListener("DOMContentLoaded", () => {
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+            const btn      = document.getElementById("send-btn");
+            const emailIn  = document.getElementById("email-input");
+            const letterIn = document.getElementById("letter");
+            const status   = document.getElementById("form-status");
+
+            btn.addEventListener("click", async () => {
+                const fromEmail = emailIn.value.trim();
+                const message   = letterIn.value.trim();
+
+                // Basic validation
+                if (!fromEmail || !message) {
+                    showStatus("Please fill in both fields.", "error");
+                    return;
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fromEmail)) {
+                    showStatus("Please enter a valid email address.", "error");
+                    return;
+                }
+
+                btn.disabled    = true;
+                btn.textContent = "Sending…";
+
+                try {
+                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                        from_email: fromEmail,
+                        message:    message,
+                    });
+
+                    showStatus("Message sent! I'll get back to you soon.", "success");
+                    emailIn.value  = "";
+                    letterIn.value = "";
+                } catch (err) {
+                    console.error(err);
+                    showStatus("Something went wrong. Please try again.", "error");
+                } finally {
+                    btn.disabled    = false;
+                    btn.textContent = "Send Message";
+                }
+            });
+
+            function showStatus(msg, type) {
+                status.textContent   = msg;
+                status.className     = "form-status " + type;
+                status.style.display = "block";
+                setTimeout(() => { status.style.display = "none"; }, 5000);
+            }
+        });
+    </script>
+</head>
+<body>
+
+<nav id = "navbar">
+    <div class = "nav-inner">
+        <ul>
+            <li>
+                <a href="#about">About</a>
+            </li>
+            <li>
+                <a href="#projects">Projects</a>
+            </li>
+            <li>
+                <a href="#contact">Contact</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<header>
+    <h1>Welcome to my website</h1>
+    <h3>I am Antonio</h3>
+</header>
+
+<section id="about">
+    <div id="about-inner">
+        <div id ="about-left">
+            <h2>Game design, Software Design and Web Development</h2>
+        </div>
+        <div id="about-right">
+            <p>I am Antonio Nikolov, a Software Engineering student with a deep passion for game design, software design, and web development. I focus on building efficient, reliable systems that solve real-world problems. Guided by the belief that technology should be accessible and impactful, I am dedicated to helping small businesses succeed by leveraging the power of modern software.</p>
+        </div>
+    </div>
+</section>
+
+<section id ="projects">
+    <div id="projects-inner">
+        <div id="project-upper">
+            <h2>My work</h2>
+            <p>I’ve worked on a variety of digital projects — from interactive game designs to web applications. My focus is always on merging clean, reliable software design with practical functionality, whether I’m architecting a complex system or building a tailored web interface.</p>
+        </div>
+        <div id="project-bottom">
+            <a href="https://github.com/AntonioNikolov1/personal" target="_blank">
+                <div class="project-box">
+                    <h3>Web Projects</h3>
+                </div>
+            </a>
+            <a href="https://github.com/AntonioNikolov1/personal" target="_blank">
+                <div class="project-box">
+                    <h3>Video Game Projects</h3>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div id="contact-inner">
+        <h2>CONTACT ME</h2>
+        <p>Have a project or a website you need built? Lets get in Contact and Work Together</p>
+
+        <input type="text" placeholder="Your Email" id="email-input">
+        <textarea name="letter" rows="6" id="letter" placeholder="Your message…"></textarea>
+
+        <p id="form-status" class="form-status" style="display:none;"></p>
+
+        <button id="send-btn" class="send-btn">Send Message</button>
+    </div>
+</section>
+
+<footer id = "footer">
+    <div id="footer-inner">
+        <p>© <script>document.write(new Date().getFullYear())</script> Antonio Nikolov </p>
+        <div id="footer-links"></div>
+    </div>
+</footer>
+
+</body>
+</html>
