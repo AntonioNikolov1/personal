@@ -21,6 +21,29 @@
             const emailIn  = document.getElementById("email-input");
             const letterIn = document.getElementById("letter");
             const status   = document.getElementById("form-status");
+            // Disable button by default
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+            btn.style.cursor = "not-allowed";
+
+// Enable only when both fields are valid
+            function checkForm() {
+                const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailIn.value.trim());
+                const messageValid = letterIn.value.trim().length > 0;
+
+                if (emailValid && messageValid) {
+                    btn.disabled = false;
+                    btn.style.opacity = "1";
+                    btn.style.cursor = "pointer";
+                } else {
+                    btn.disabled = true;
+                    btn.style.opacity = "0.5";
+                    btn.style.cursor = "not-allowed";
+                }
+            }
+
+            emailIn.addEventListener("input", checkForm);
+            letterIn.addEventListener("input", checkForm);
 
             btn.addEventListener("click", async () => {
                 const fromEmail = emailIn.value.trim();
